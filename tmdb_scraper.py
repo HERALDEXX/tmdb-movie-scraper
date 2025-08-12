@@ -6,8 +6,6 @@ from dotenv import load_dotenv
 import sys
 load_dotenv()
 
-app_name = "TMDb Movie Scraper\nCopyright © 2025 Herald Inyang"
-
 API_KEY = os.getenv("TMDB_API_KEY")
 
 # Check if API key exists
@@ -46,7 +44,10 @@ def get_genres():
         print(f"Unexpected error while fetching genres: {e}")
         sys.exit(1)
 
-def main():
+target_movies = 10000 # Default target movies
+
+def main(target_movies):
+
     try:
         genres_map = get_genres()
     except SystemExit:
@@ -59,11 +60,10 @@ def main():
     genres = []
 
     per_page = 20
-    target_movies = 10000
     max_pages = 500  # TMDb limit
     movies_fetched = 0
 
-    print(f"{app_name}\n")
+    print(f"TMDb Movie Scraper\nCopyright © 2025 Herald Inyang\n")
     print(f"Fetching up to {target_movies} movies across {max_pages} pages.\nPlease wait...")
 
     for page in range(1, max_pages + 1):
@@ -110,9 +110,6 @@ def main():
             break
 
         for movie in results:
-            if movies_fetched >= target_movies:
-                break
-                
             titles.append(movie.get("title", ""))
             release_date = movie.get("release_date", "")
             year = release_date.split("-")[0] if release_date else ""
@@ -123,14 +120,15 @@ def main():
             genres.append(", ".join(filter(None, genre_names)))
 
             movies_fetched += 1
+            if movies_fetched >= target_movies:
+                print(f"\nReached target of {target_movies} movies.")
+                break
 
         # Calculate and print percentage
         percentage_complete = (page / max_pages) * 100
         print(f"\r{percentage_complete:.2f}% complete", end="", flush=True)
 
-        if movies_fetched >= target_movies:
-            print(f"\nReached target of {target_movies} movies.")
-            break
+        
         time.sleep(0.25)
 
     if movies_fetched == 0:
@@ -145,8 +143,11 @@ def main():
         "Genre": genres,
     })
 
-    print(f"\nScraped {len(df) + 1} movies.")
-    
+    print(f"\nScraped {len(df)} movies.")
+    if len(df) < target_movies:
+        skipped = target_movies - len(df)
+        plural = "s" if skipped != 1 else ""
+        print(f"\n⚠️ NOTE: {skipped:,} movie{plural} skipped due to API limits.\n")    
     try:
         df.to_csv("tmdb_movies.csv", index=False)
         print("Saved data to tmdb_movies.csv")
@@ -154,4 +155,4 @@ def main():
         print(f"Error saving CSV file: {e}")
 
 if __name__ == "__main__":
-    main()
+    main(target_movies)

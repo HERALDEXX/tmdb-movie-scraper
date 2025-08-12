@@ -1,0 +1,11 @@
+notebook
+pandas
+matplotlib
+seaborn
+plotly
+jupyter
+numpy
+ipykernel
+statsmodels
+ipython
+kaleido>=0.3
