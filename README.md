@@ -1,6 +1,6 @@
 # TMDb Movie Scraper
 
-Simple script that pulls **10,000** movie records from The Movie Database (TMDb) API and writes a CSV with these columns:
+Simple script that pulls up to **10,000** movie records from The Movie Database (TMDb) API and writes a CSV with these columns:
 
 **Title | Year | Rating | Description | Genre**
 
@@ -9,8 +9,10 @@ This repo contains a minimal Python scraper that uses TMDb's API (discover endpo
 ## Table of Contents
 
 - [Dataset](#dataset)
-- [Getting Started](#getting-started)
-- [Usage](#usage)
+- [Analysis](#analysis)
+- [Setup](#setup)
+  - [Getting Your TMDb API Key](#getting-your-tmdb-api-key)
+- [Usage/Updating Dataset](#usageupdating-dataset)
 - [Output CSV](#output-csv)
 - [Attribution](#attribution)
 - [To-Do](#to-do)
@@ -19,17 +21,26 @@ This repo contains a minimal Python scraper that uses TMDb's API (discover endpo
 ## Dataset
 
 ### TMDb Movies Dataset
+
 - **Source**: The Movie Database (TMDb) API
-- **Size**: 10,000 movies
+- **Size**: ~10,000 movies
 - **Format**: CSV
-- **File**: [**`tmdb_movies.csv`**](https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/refs/heads/main/tmdb_movies.csv)
+- **File**: [**`tmdb_movies.csv`**](https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/main/tmdb_movies.csv)
 - **Last Updated**: August 11, 2025
 - **Selection Criteria**: Top movies sorted by popularity
 - **Columns**: Title, Year, Rating, Description, Genre
 
 ---
 
-## Getting Started
+## Analysis
+
+Detailed data exploration live in the [**`feature/analysis-notebooks`**](https://github.com/HERALDEXX/tmdb-movie-scraper/tree/feature/analysis-notebooks) branch
+
+See [analysis/README.md](https://github.com/HERALDEXX/tmdb-movie-scraper/blob/feature/analysis-notebooks/analysis/README.md) for more details.
+
+---
+
+## Setup
 
 1. Clone the repository:
 
@@ -54,6 +65,10 @@ This repo contains a minimal Python scraper that uses TMDb's API (discover endpo
    ```bash
    cp .env.example .env
    ```
+
+   ### Getting Your TMDb API Key
+
+   > You need a TMDb API key to run the scraper. Follow these remaining steps to get your API key:
 
 5. Get your TMDb API key (step-by-step)
 
@@ -83,7 +98,9 @@ This repo contains a minimal Python scraper that uses TMDb's API (discover endpo
 
 ---
 
-## Usage
+## Usage/Updating Dataset
+
+> To update the dataset with latest data from TMDb, follow these steps:
 
 1. Make sure your `.env` contains `TMDB_API_KEY` (or export the variable in your shell).
 2. Run the scraper:
@@ -92,7 +109,7 @@ This repo contains a minimal Python scraper that uses TMDb's API (discover endpo
    python tmdb_scraper.py
    ```
 
-The script writes and/or updates `tmdb_movies.csv` in the project folder.
+> The script writes and/or updates `tmdb_movies.csv` with latest data from TMDb API.
 
 ---
 
@@ -115,14 +132,15 @@ Data provided by TMDb ([https://www.themoviedb.org](https://www.themoviedb.org))
 ---
 
 ## To-Do
-- Store scraped data in a better format, instead of CSV e.g. 
-   - [ ] Use JSON,
-   - [ ] Use SQLite,
-   - [ ] Use XLSX,
-   - [ ] Use XML,
-   - [ ] Use PostgreSQL / MySQL,
-   **or**
-   - [ ] Other
+
+- Store scraped data in a better format, instead of CSV e.g.
+  - [ ] Use JSON,
+  - [ ] Use SQLite,
+  - [ ] Use XLSX,
+  - [ ] Use XML,
+  - [ ] Use PostgreSQL / MySQL,
+        **or**
+  - [ ] Other
 - [ ] Use API read access token instead of API key.
 - [ ] Pagination to fetch more than 10,000 movies.
 
