@@ -13,6 +13,7 @@ This repo contains a minimal Python scraper that uses TMDb's API (discover endpo
 - [Setup](#setup)
   - [Getting Your TMDb API Key](#getting-your-tmdb-api-key)
 - [Usage/Updating Dataset](#usageupdating-dataset)
+- [API Optimization](#api-optimization)
 - [Output CSV](#output-csv)
 - [Attribution](#attribution)
 - [To-Do](#to-do)
@@ -110,6 +111,12 @@ See [analysis/README.md](https://github.com/HERALDEXX/tmdb-movie-scraper/blob/fe
    ```
 
 > The script writes and/or updates `tmdb_movies.csv` with latest data from TMDb API.
+
+---
+
+## API Optimization
+
+Optimized scraper **(with improved speed & efficiency)** is available in the [**`feature/api-optimization`**](https://github.com/HERALDEXX/tmdb-movie-scraper/tree/feature/api-optimization) branch.
 
 ---
 

@@ -6,8 +6,6 @@ from dotenv import load_dotenv
 import sys
 load_dotenv()
 
-app_name = "TMDb Movie Scraper\nCopyright © 2025 Herald Inyang"
-
 API_KEY = os.getenv("TMDB_API_KEY")
 
 # Check if API key exists
@@ -63,7 +61,7 @@ def main():
     max_pages = 500  # TMDb limit
     movies_fetched = 0
 
-    print(f"{app_name}\n")
+    print(f"TMDb Movie Scraper\nCopyright © 2025 Herald Inyang\n")
     print(f"Fetching up to {target_movies} movies across {max_pages} pages.\nPlease wait...")
 
     for page in range(1, max_pages + 1):
@@ -145,7 +143,9 @@ def main():
         "Genre": genres,
     })
 
-    print(f"\nScraped {len(df) + 1} movies.")
+    print(f"\nScraped {len(df)} movies.")
+    if len(df) < target_movies:
+        print(f"⚠️ Note: {target_movies - len(df)} movie(s) skipped due to API limits.\n")
     
     try:
         df.to_csv("tmdb_movies.csv", index=False)
