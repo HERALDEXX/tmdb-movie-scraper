@@ -1,15 +1,14 @@
-# TMDb Movie Scraper
+# TMDb Movie Scraper (Optimized)
 
-Simple script that pulls up to **10,000** movie records from The Movie Database (TMDb) API and writes a CSV with these columns:
+Optimized script that pulls up to **10,000** movie records from The Movie Database (TMDb) API and writes a CSV with these columns:
 
 **Title | Year | Rating | Description | Genre**
 
-This repo contains a minimal Python scraper that uses TMDb's API (discover endpoint) to fetch movies page-by-page and saves a CSV suitable for portfolio work.
+This repo contains an optimized Python scraper that uses TMDb's API (discover endpoint) to fetch movies page-by-page and saves a CSV suitable for portfolio work.
 
 ## Table of Contents
 
 - [Dataset](#dataset)
-- [Analysis](#analysis)
 - [Setup](#setup)
   - [Getting Your TMDb API Key](#getting-your-tmdb-api-key)
 - [Usage/Updating Dataset](#usageupdating-dataset)
@@ -25,18 +24,10 @@ This repo contains a minimal Python scraper that uses TMDb's API (discover endpo
 - **Source**: The Movie Database (TMDb) API
 - **Size**: ~10,000 movies
 - **Format**: CSV
-- **File**: [**`tmdb_movies.csv`**](https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/main/tmdb_movies.csv)
-- **Last Updated**: August 11, 2025
+- **File**: [**`tmdb_movies.csv`**](https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/feature/api-optimization/tmdb_movies.csv)
+- **Last Updated**: August 13, 2025
 - **Selection Criteria**: Top movies sorted by popularity
-- **Columns**: Title, Year, Rating, Description, Genre
-
----
-
-## Analysis
-
-Detailed data exploration live in the [**`feature/analysis-notebooks`**](https://github.com/HERALDEXX/tmdb-movie-scraper/tree/feature/analysis-notebooks) branch
-
-See [analysis/README.md](https://github.com/HERALDEXX/tmdb-movie-scraper/blob/feature/analysis-notebooks/analysis/README.md) for more details.
+- **Columns**: Title, Year, Rating, Description, Genre (plus `Adult` if `TMDB_INCLUDE_ADULT` is enabled)
 
 ---
 
@@ -54,13 +45,19 @@ See [analysis/README.md](https://github.com/HERALDEXX/tmdb-movie-scraper/blob/fe
    cd tmdb-movie-scraper
    ```
 
-3. Run the following command to install the required packages:
+3. Switch to feature/api-optimization branch:
+
+   ```bash
+   git checkout feature/api-optimization
+   ```
+
+4. Run the following command to install the required packages:
 
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Create your `.env` file:
+5. Create your `.env` file:
 
    ```bash
    cp .env.example .env
@@ -70,7 +67,7 @@ See [analysis/README.md](https://github.com/HERALDEXX/tmdb-movie-scraper/blob/fe
 
    > You need a TMDb API key to run the scraper. Follow these remaining steps to get your API key:
 
-5. Get your TMDb API key (step-by-step)
+6. Get your TMDb API key (step-by-step)
 
    - Go to [https://www.themoviedb.org/](https://www.themoviedb.org/) and sign up / log in.
 
@@ -90,7 +87,13 @@ See [analysis/README.md](https://github.com/HERALDEXX/tmdb-movie-scraper/blob/fe
 
    - After submission you’ll be shown an API key (a long string). **Do not share it publicly.**
 
-6. Copy your TMDb API key and replace `your_api_key_here` in the `.env` file, with your actual API key.
+7. Copy your TMDb API key and replace `your_api_key_here` in the `.env` file, with your actual API key.
+
+8. Toggle `TMDB_INCLUDE_ADULT` in your `.env` file to `true` if you want to include adult content in the dataset.
+
+   ```env
+   TMDB_INCLUDE_ADULT=true
+   ```
 
 ---
 
@@ -122,6 +125,7 @@ Columns:
 - `Rating` — TMDb `vote_average`
 - `Description` — overview (single line)
 - `Genre` — comma-separated genre names
+- `Adult` — `true` if movie is adult content (column only present if `TMDB_INCLUDE_ADULT` is enabled)
 
 ---
 
@@ -148,20 +152,17 @@ Data provided by TMDb ([https://www.themoviedb.org](https://www.themoviedb.org))
 
 ## License
 
-This project is licensed under the [`MIT License`](https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/refs/heads/main/LICENSE)
+This project is licensed under the [`MIT License`](https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/main/LICENSE)
 
 ---
 
 <div align="center">
     <p>
-        <strong style="font-weight: bold;">MIT Licensed • © 2025 Herald Inyang •</strong> 
+        <a href="https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/main/LICENSE" target="_blank">
+            <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square" alt="Click to View MIT License" style="vertical-align: middle;" />
+        </a><strong style="font-weight: bold;">• © 2025 Herald Inyang •</strong> 
         <a href="https://github.com/HERALDEXX" target="_blank">
             <img src="https://img.shields.io/badge/GitHub-HERALDEXX-000?style=flat-square&logo=github" alt="GitHub Badge" style="vertical-align: middle;" />
-        </a>
-    </p>
-    <p>
-        <a href="https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/refs/heads/main/LICENSE" target="_blank">
-            <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square" alt="Click to View MIT License" style="vertical-align: middle;" />
         </a>
     </p>
 </div>
