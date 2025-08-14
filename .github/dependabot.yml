@@ -5,7 +5,31 @@
 
 version: 2
 updates:
-  - package-ecosystem: "pip" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  # Main branch updates
+  - package-ecosystem: "pip" # or pip, docker, etc.
+    directory: "/"
     schedule:
       interval: "weekly"
+    target-branch: "main"
+
+  # CLI feature branch updates
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    target-branch: "feature/cli"
+
+  # API optimization feature branch updates
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    target-branch: "feature/api-optimization"
+
+  # Analysis notebooks feature branch updates
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    target-branch: "feature/analysis-notebooks"
+
