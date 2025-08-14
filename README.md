@@ -1,33 +1,64 @@
-# TMDb Movie Scraper (Optimized)
+# TMDb Movie Scraper (CLI Edition)
 
-Optimized script that pulls up to **10,000** movie records from The Movie Database (TMDb) API and writes a CSV with these columns:
+Powerful command-line tool that pulls up to **10,000** movie records from The Movie Database (TMDb) API with multiple output formats and advanced features.
 
-**Title | Year | Rating | Description | Genre**
+**Supported Formats:** CSV | JSON | XLSX | SQLite
 
-This repo contains an optimized Python scraper that uses TMDb's API (discover endpoint) to fetch movies page-by-page and saves a CSV suitable for portfolio work.
+This repo contains an optimized Python scraper with a comprehensive Command-Line interface that uses TMDb's API to fetch movies and provides flexible data export options for portfolio and analysis work.
 
 ## Table of Contents
 
+- [Features](#features)
 - [Dataset](#dataset)
 - [Setup](#setup)
   - [Getting Your TMDb API Key](#getting-your-tmdb-api-key)
-- [Usage/Updating Dataset](#usageupdating-dataset)
-- [Output CSV](#output-csv)
+- [CLI Usage](#cli-usage)
+  - [Basic Scraping](#basic-scraping)
+  - [Advanced Options](#advanced-options)
+  - [Data Management](#data-management)
+- [Output Formats](#output-formats)
+- [Legacy Usage](#legacy-usage)
 - [Attribution](#attribution)
 - [To-Do](#to-do)
 - [License](#license)
+
+## Features
+
+### 🚀 **Performance Optimized**
+
+- **Async/await** concurrent requests for maximum speed
+- **Connection pooling** and intelligent rate limiting
+- **Progress tracking** with real-time statistics
+- Up to **10x faster** than traditional scrapers
+
+### 🎛️ **Powerful CLI Interface**
+
+- **Multiple output formats**: CSV, JSON, XLSX, SQLite
+- **Configurable options**: movie count, concurrent requests, adult content
+- **Data conversion** between formats
+- **Dataset analysis** with summary statistics
+- **Verbose/quiet modes** for different use cases
+
+### 📊 **Smart Data Handling**
+
+- **Auto-retry logic** with exponential backoff
+- **Error handling** and logging
+- **Data validation** and cleanup
+- **Resume functionality** for interrupted scrapes
+
+---
 
 ## Dataset
 
 ### TMDb Movies Dataset
 
 - **Source**: The Movie Database (TMDb) API
-- **Size**: ~10,000 movies
-- **Format**: CSV
-- **File**: [**`tmdb_movies.csv`**](https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/feature/api-optimization/tmdb_movies.csv)
-- **Last Updated**: August 13, 2025
+- **Size**: ~10,000 movies (configurable)
+- **Formats**: CSV, JSON, XLSX, SQLite
+- **Default File**: [**`tmdb_movies.csv`**](https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/feature/cli-interface/tmdb_movies.csv)
+- **Last Updated**: August 14, 2025
 - **Selection Criteria**: Top movies sorted by popularity
-- **Columns**: Title, Year, Rating, Description, Genre (plus `Adult` if `TMDB_INCLUDE_ADULT` is enabled)
+- **Columns**: Title, Year, Rating, Description, Genre (plus `Adult` if enabled)
 
 ---
 
@@ -39,19 +70,17 @@ This repo contains an optimized Python scraper that uses TMDb's API (discover en
    git clone https://github.com/HERALDEXX/tmdb-movie-scraper.git
    ```
 
-2. Navigate to the project directory:
-
    ```bash
    cd tmdb-movie-scraper
    ```
 
-3. Run the following command to install the required packages:
+2. Install the required packages:
 
    ```bash
    pip install -r requirements.txt
    ```
 
-4. Create your `.env` file:
+3. Create your `.env` file:
 
    ```bash
    cp .env.example .env
@@ -59,9 +88,9 @@ This repo contains an optimized Python scraper that uses TMDb's API (discover en
 
    ### Getting Your TMDb API Key
 
-   > You need a TMDb API key to run the scraper. Follow these remaining steps to get your API key:
+   > You need a TMDb API key to run the scraper. Follow these steps to get your API key:
 
-5. Get your TMDb API key (step-by-step)
+4. Get your TMDb API key (step-by-step)
 
    - Go to [https://www.themoviedb.org/](https://www.themoviedb.org/) and sign up / log in.
 
@@ -79,11 +108,11 @@ This repo contains an optimized Python scraper that uses TMDb's API (discover en
 
      For intended use, select **Personal / Portfolio / Learning** (or similar).
 
-   - After submission you’ll be shown an API key (a long string). **Do not share it publicly.**
+   - After submission you'll be shown an API key (a long string). **Do not share it publicly.**
 
-6. Copy your TMDb API key and replace `your_api_key_here` in the `.env` file, with your actual API key.
+5. Copy your TMDb API key and replace `your_api_key_here` in the `.env` file with your actual API key.
 
-7. Toggle `TMDB_INCLUDE_ADULT` in your `.env` file to `true` if you want to include adult content in the dataset.
+6. (Optional) Enable adult content in your `.env` file:
 
    ```env
    TMDB_INCLUDE_ADULT=true
@@ -91,35 +120,168 @@ This repo contains an optimized Python scraper that uses TMDb's API (discover en
 
 ---
 
-> Do not commit your `.env` file or API key to a public repo.
+> ⚠️ **Important:** Do not commit your `.env` file or API key to any **public** repo.
 
 ---
 
-## Usage/Updating Dataset
+## CLI Usage
 
-> To update the dataset with latest data from TMDb, follow these steps:
+### Basic Scraping
 
-1. Make sure your `.env` contains `TMDB_API_KEY` (or export the variable in your shell).
-2. Run the scraper:
+Examples:
 
-   ```bash
-   python tmdb_scraper.py
-   ```
+- Quick start - scrape 1,000 movies to CSV
 
-> The script writes and/or updates `tmdb_movies.csv` with latest data from TMDb API.
+```bash
+python cli_scraper.py scrape
+```
+
+- Scrape 5,000 movies to JSON format
+
+```bash
+python cli_scraper.py scrape --count 5000 --format json --output movies.json
+```
+
+- High-speed scraping with 12 concurrent requests
+
+```bash
+python cli_scraper.py scrape -c 10000 --concurrent 12 --verbose
+```
+
+### Advanced Options
+
+Examples:
+
+- Include adult content and save to SQLite
+
+```bash
+python cli_scraper.py scrape --count 5000 --include-adult --format sqlite --output movies.db
+```
+
+- Quiet mode for automated scripts
+
+```bash
+python cli_scraper.py scrape --count 2000 --quiet --output data/movies.xlsx
+```
+
+- Full configuration example
+
+```bash
+python cli_scraper.py scrape \
+    --count 10000 \
+    --output premium_movies.json \
+    --format json \
+    --concurrent 8 \
+    --include-adult \
+    --verbose
+```
+
+### Data Management
+
+Examples:
+
+- Analyze existing dataset
+
+```bash
+python cli_scraper.py info tmdb_movies.csv
+```
+
+- Convert between formats
+
+```bash
+python cli_scraper.py convert movies.csv movies.sqlite --to-format sqlite
+```
+
+```bash
+python cli_scraper.py convert data.json data.xlsx --to-format xlsx
+```
+
+- Check configuration and test API
+
+```bash
+python cli_scraper.py config
+```
+
+# Get help for any command
+
+```bash
+python cli_scraper.py --help
+```
+
+```bash
+python cli_scraper.py scrape --help
+```
+
+### CLI Command Reference
+
+| Command   | Description                 | Example                                       |
+| --------- | --------------------------- | --------------------------------------------- |
+| `scrape`  | Scrape movies from TMDb API | `scrape --count 5000 --format json`           |
+| `info`    | Show dataset information    | `info movies.csv`                             |
+| `convert` | Convert between formats     | `convert data.csv data.json --to-format json` |
+| `config`  | Check configuration         | `config`                                      |
+
+### CLI Options
+
+| Option            | Short | Description                          | Default         |
+| ----------------- | ----- | ------------------------------------ | --------------- |
+| `--count`         | `-c`  | Number of movies to scrape           | 1000            |
+| `--output`        | `-o`  | Output filename                      | tmdb_movies.csv |
+| `--format`        | `-f`  | Output format (csv/json/xlsx/sqlite) | csv             |
+| `--concurrent`    |       | Concurrent requests                  | 8               |
+| `--include-adult` |       | Include adult content                | False           |
+| `--verbose`       | `-v`  | Enable verbose output                | False           |
+| `--quiet`         | `-q`  | Suppress output                      | False           |
 
 ---
 
-## Output CSV
+## Output Formats
 
-Columns:
+### CSV Format
 
-- `Title` — movie title
-- `Year` — release year (YYYY)
-- `Rating` — TMDb `vote_average`
-- `Description` — overview (single line)
-- `Genre` — comma-separated genre names
-- `Adult` — `true` if movie is adult content (column only present if `TMDB_INCLUDE_ADULT` is enabled)
+```csv
+Title,Year,Rating,Description,Genre
+The Shawshank Redemption,1994,9.3,"Two imprisoned men bond...",Drama
+The Godfather,1972,9.2,"The aging patriarch...",Drama Crime
+```
+
+### JSON Format
+
+```json
+[
+  {
+    "Title": "The Shawshank Redemption",
+    "Year": "1994",
+    "Rating": 9.3,
+    "Description": "Two imprisoned men bond...",
+    "Genre": "Drama"
+  }
+]
+```
+
+### SQLite Database
+
+- Table name: `movies`
+- Columns: Title, Year, Rating, Description, Genre, Adult (if enabled)
+- Indexed for fast queries
+
+### XLSX (Excel)
+
+- Clean formatting with headers
+- Suitable for business presentations
+- Compatible with Excel, Google Sheets, etc.
+
+---
+
+## Legacy Usage
+
+> For backward compatibility, you can still use the original scraper:
+
+```bash
+python tmdb_scraper.py
+```
+
+This runs the optimized async scraper with default settings (10,000 movies to CSV).
 
 ---
 
@@ -131,16 +293,24 @@ Data provided by TMDb ([https://www.themoviedb.org](https://www.themoviedb.org))
 
 ## To-Do
 
-- Store scraped data in a better format, instead of CSV e.g.
-  - [ ] Use JSON,
-  - [ ] Use SQLite,
-  - [ ] Use XLSX,
-  - [ ] Use XML,
-  - [ ] Use PostgreSQL / MySQL,
-        **or**
-  - [ ] Other
-- [ ] Use API read access token instead of API key.
-- [ ] Pagination to fetch more than 10,000 movies.
+### Completed ✅
+
+- [x] **Async optimization** - 10x performance improvement
+- [x] **CLI interface** - Command-line tool with multiple options
+- [x] **Multiple formats** - JSON, XLSX, SQLite support
+- [x] **Data conversion** - Convert between formats
+- [x] **Progress tracking** - Real-time progress bars
+- [x] **Configuration management** - Easy setup and validation
+
+### Planned 🔄
+
+- [ ] **Web dashboard** - Browser-based interface
+- [ ] **Advanced filtering** - Genre, year, rating filters
+- [ ] **Data analysis** - Built-in statistics and insights
+- [ ] **API read access token** - Enhanced authentication
+- [ ] **Pagination beyond 10K** - Fetch unlimited movies
+- [ ] **Export templates** - Custom output formats
+- [ ] **Scheduled scraping** - Automated data updates
 
 ---
 
@@ -154,7 +324,8 @@ This project is licensed under the [`MIT License`](https://raw.githubusercontent
     <p>
         <a href="https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/main/LICENSE" target="_blank">
             <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square" alt="Click to View MIT License" style="vertical-align: middle;" />
-        </a><strong style="font-weight: bold;">• © 2025 Herald Inyang •</strong> 
+        </a>
+        <strong style="font-weight: bold;"> • © 2025 Herald Inyang • </strong> 
         <a href="https://github.com/HERALDEXX" target="_blank">
             <img src="https://img.shields.io/badge/GitHub-HERALDEXX-000?style=flat-square&logo=github" alt="GitHub Badge" style="vertical-align: middle;" />
         </a>

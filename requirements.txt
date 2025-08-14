@@ -6,3 +6,7 @@ requests==2.32.4
 # New optimization dependencies
 aiohttp>=3.8.0
 tqdm>=4.64.0
+
+# CLI interface dependencies
+click>=8.0.0
+openpyxl>=3.0.0

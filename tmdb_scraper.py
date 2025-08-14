@@ -8,10 +8,9 @@ import sys
 from tqdm.asyncio import tqdm
 from typing import Dict, List, Tuple, Optional
 import logging
+from datetime import datetime
 
 load_dotenv()
-
-app_name = "TMDb Movie Scraper (Optimized)\nCopyright © 2025 Herald Inyang"
 
 # Configure logging for better error tracking
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -211,7 +210,7 @@ class TMDbScraperOptimized:
         """Main scraping method with optimized batching"""
         start_time = time.time()
         
-        print(f"{app_name}\n")
+        print(f"TMDb Movie Scraper (Optimized)\nCopyright © {datetime.now().year} Herald Inyang\n")
         print(f"🚀 Starting optimized scraping of {self.target_movies} movies...")
         print(f"📊 Using {self.concurrent_requests} concurrent requests\n")
         
