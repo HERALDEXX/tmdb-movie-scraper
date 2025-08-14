@@ -276,7 +276,9 @@ async def main():
                 scraper.save_to_csv(df)
                 print(f"\n🎬 Scraping complete! Found {len(df)} movies.")
                 if len(df) < scraper.target_movies:
-                    print(f"⚠️ Note: {scraper.target_movies - len(df)} movie(s) skipped due to API limits.\n")        
+                    skipped = scraper.target_movies - len(df)
+                    plural = "s" if skipped != 1 else ""
+                    print(f"\n⚠️ NOTE: {skipped:,} movie{plural} skipped due to API limits.\n")
             else:
                 print("❌ No movies were scraped. Please check your API key and connection.")
                 

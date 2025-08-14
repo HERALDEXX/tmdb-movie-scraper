@@ -13,6 +13,7 @@ This repo contains an optimized Python scraper with a comprehensive Command-Line
 - [Setup](#setup)
   - [Getting Your TMDb API Key](#getting-your-tmdb-api-key)
 - [CLI Usage](#cli-usage)
+  - [**Alternative:** Package Installation](#alternative-package-installation)
   - [Basic Scraping](#basic-scraping)
   - [Advanced Options](#advanced-options)
   - [Data Management](#data-management)
@@ -55,7 +56,7 @@ This repo contains an optimized Python scraper with a comprehensive Command-Line
 - **Source**: The Movie Database (TMDb) API
 - **Size**: ~10,000 movies (configurable)
 - **Formats**: CSV, JSON, XLSX, SQLite
-- **Default File**: [**`tmdb_movies.csv`**](https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/feature/cli-interface/tmdb_movies.csv)
+- **Default File**: [**`tmdb_movies.csv`**](https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/feature/cli/tmdb_movies.csv)
 - **Last Updated**: August 14, 2025
 - **Selection Criteria**: Top movies sorted by popularity
 - **Columns**: Title, Year, Rating, Description, Genre (plus `Adult` if enabled)
@@ -126,6 +127,18 @@ This repo contains an optimized Python scraper with a comprehensive Command-Line
 
 ## CLI Usage
 
+The scraper can be run directly using the `python cli_scraper.py` command. If you prefer, you can also install the package via `pip` (see below) to use a cleaner command name.
+
+#### Alternative: Package Installation
+
+If you prefer to install the project as a global command on your system, you can use the `setup.py` file:
+
+```bash
+pip install .
+```
+
+After installation, you can run the scraper from any directory using the `tmdb-scraper` command instead of `python cli_scraper.py`.
+
 ### Basic Scraping
 
 Examples:
@@ -153,6 +166,18 @@ python cli_scraper.py scrape -c 10000 --concurrent 12 --verbose
 Examples:
 
 - Include adult content and save to SQLite
+
+```bash
+python cli_scraper.py scrape --count 5000 --include-adult --format sqlite --output movies.sqlite3
+```
+
+**or**
+
+```bash
+python cli_scraper.py scrape --count 5000 --include-adult --format sqlite --output movies.sqlite
+```
+
+**or**
 
 ```bash
 python cli_scraper.py scrape --count 5000 --include-adult --format sqlite --output movies.db
