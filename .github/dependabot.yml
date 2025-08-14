@@ -32,4 +32,11 @@ updates:
     schedule:
       interval: "weekly"
     target-branch: "feature/analysis-notebooks"
+    
 
+  # Python analysis dependencies
+  - package-ecosystem: "pip"
+    directory: "/analysis/"
+    schedule:
+      interval: "weekly"
+    target-branch: "feature/analysis-notebooks"

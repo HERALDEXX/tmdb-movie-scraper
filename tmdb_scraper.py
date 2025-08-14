@@ -145,7 +145,9 @@ def main():
 
     print(f"\nScraped {len(df)} movies.")
     if len(df) < target_movies:
-        print(f"⚠️ Note: {target_movies - len(df)} movie(s) skipped due to API limits.\n")
+        skipped = target_movies - len(df)
+        plural = "s" if skipped != 1 else ""
+        print(f"\n⚠️ NOTE: {skipped:,} movie{plural} skipped due to API limits.\n")    
     
     try:
         df.to_csv("tmdb_movies.csv", index=False)
