@@ -6,6 +6,8 @@ Simple script that pulls up to **10,000** movie records from The Movie Database 
 
 This repo contains a minimal Python scraper that uses TMDb's API (discover endpoint) to fetch movies page-by-page and saves a CSV suitable for portfolio work.
 
+---
+
 ## Table of Contents
 
 - [Dataset](#dataset)
@@ -13,7 +15,8 @@ This repo contains a minimal Python scraper that uses TMDb's API (discover endpo
 - [Setup](#setup)
   - [Getting Your TMDb API Key](#getting-your-tmdb-api-key)
 - [Usage/Updating Dataset](#usageupdating-dataset)
-- [API Optimization](#api-optimization)
+- [**CLI Edition**](#cli-edition)
+- [**API Optimization**](#api-optimization)
 - [Output CSV](#output-csv)
 - [Attribution](#attribution)
 - [To-Do](#to-do)
@@ -89,7 +92,7 @@ See [analysis/README.md](https://github.com/HERALDEXX/tmdb-movie-scraper/blob/fe
 
      For intended use, select **Personal / Portfolio / Learning** (or similar).
 
-   - After submission you’ll be shown an API key (a long string). **Do not share it publicly.**
+   - After submission you'll be shown an API key (a long string). **Do not share it publicly.**
 
 6. Copy your TMDb API key and replace `your_api_key_here` in the `.env` file, with your actual API key.
 
@@ -101,7 +104,9 @@ See [analysis/README.md](https://github.com/HERALDEXX/tmdb-movie-scraper/blob/fe
 
 ## Usage/Updating Dataset
 
-> To update the dataset with latest data from TMDb, follow these steps:
+### Basic Usage (This Branch)
+
+> To update the dataset with latest data from TMDb using the basic scraper:
 
 1. Make sure your `.env` contains `TMDB_API_KEY` (or export the variable in your shell).
 2. Run the scraper:
@@ -111,6 +116,12 @@ See [analysis/README.md](https://github.com/HERALDEXX/tmdb-movie-scraper/blob/fe
    ```
 
 > The script writes and/or updates `tmdb_movies.csv` with latest data from TMDb API.
+
+---
+
+## CLI Edition
+
+Powerful command-line tool **(with multiple output formats & advanced features)** is available in the [**`feature/cli`**](https://github.com/HERALDEXX/tmdb-movie-scraper/tree/feature/cli) branch.
 
 ---
 
@@ -140,35 +151,41 @@ Data provided by TMDb ([https://www.themoviedb.org](https://www.themoviedb.org))
 
 ## To-Do
 
-- Store scraped data in a better format, instead of CSV e.g.
-  - [ ] Use JSON,
-  - [ ] Use SQLite,
-  - [ ] Use XLSX,
-  - [ ] Use XML,
-  - [ ] Use PostgreSQL / MySQL,
-        **or**
-  - [ ] Other
-- [ ] Use API read access token instead of API key.
-- [ ] Pagination to fetch more than 10,000 movies.
+### Completed ✅
+
+- [x] **API Optimization** - Async scraping with 10x performance improvement
+- [x] **CLI Interface** - Command-line tool with multiple formats
+- [x] **Multiple output formats** - JSON, XLSX, SQLite support
+- [x] **Data conversion tools** - Convert between formats
+- [x] **Analysis notebooks** - Data exploration and insights
+
+### In Progress 🔄
+
+- [ ] **Web dashboard** - Browser-based interface
+- [ ] **Advanced filtering** - Genre, year, rating filters
+
+### Planned 📋
+
+- [ ] **API read access token** - Enhanced authentication
+- [ ] **Pagination beyond 10K** - Fetch unlimited movies
+- [ ] **Scheduled scraping** - Automated data updates
+- [ ] **PostgreSQL / MySQL** - Enterprise database support
 
 ---
 
 ## License
 
-This project is licensed under the [`MIT License`](https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/refs/heads/main/LICENSE)
-
+MIT License - see [LICENSE](./LICENSE) file for details.
 ---
 
 <div align="center">
     <p>
-        <strong style="font-weight: bold;">MIT Licensed • © 2025 Herald Inyang •</strong> 
+        <strong>© 2025 Herald Inyang</strong> • 
         <a href="https://github.com/HERALDEXX" target="_blank">
             <img src="https://img.shields.io/badge/GitHub-HERALDEXX-000?style=flat-square&logo=github" alt="GitHub Badge" style="vertical-align: middle;" />
-        </a>
-    </p>
-    <p>
-        <a href="https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/refs/heads/main/LICENSE" target="_blank">
-            <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square" alt="Click to View MIT License" style="vertical-align: middle;" />
+        </a> • 
+        <a href="https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/main/LICENSE" target="_blank">
+            <img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square" alt="MIT License" style="vertical-align: middle;" />
         </a>
     </p>
 </div>
