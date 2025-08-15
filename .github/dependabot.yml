@@ -32,15 +32,11 @@ updates:
     schedule:
       interval: "weekly"
     target-branch: "feature/analysis-notebooks"
-    # Explicitly tell Dependabot which file to update
-    package-ecosystem-options:
-      file: "requirements.txt"
+    
 
   # Python analysis dependencies
   - package-ecosystem: "pip"
-    directory: "/"
+    directory: "/analysis/"
     schedule:
       interval: "weekly"
     target-branch: "feature/analysis-notebooks"
-    package-ecosystem-options:
-      file: "requirements-analysis.txt"
