@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-TMDb Movie Scraper - CLI Interface
+TMDb Movie Scraper - CLI Edition
 A command-line interface for the optimized TMDb movie scraper.
 """
 
@@ -21,7 +21,7 @@ from tmdb_scraper import TMDbScraperOptimized, logger
 @click.group()
 @click.version_option(version='1.0.0')
 def cli():
-    """TMDb Movie Scraper - CLI Interface
+    """TMDb Movie Scraper - CLI Edition
     
     A powerful command-line tool to scrape movie data from The Movie Database (TMDb).
     """

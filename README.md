@@ -32,7 +32,7 @@ This repo contains an optimized Python scraper with a comprehensive Command-Line
 - **Progress tracking** with real-time statistics
 - Up to **10x faster** than traditional scrapers
 
-### 🎛️ **Powerful CLI Interface**
+### 🎛️ **Powerful CLI**
 
 - **Multiple output formats**: CSV, JSON, XLSX, SQLite
 - **Configurable options**: movie count, concurrent requests, adult content
@@ -58,8 +58,8 @@ This repo contains an optimized Python scraper with a comprehensive Command-Line
 - **Formats**: CSV, JSON, XLSX, SQLite
 - **Default File**: [**`tmdb_movies.csv`**](https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/feature/cli/tmdb_movies.csv)
 - **JSON Convert**: [**`tmdb_movies.json`**](https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/feature/cli/converts/tmdb_movies.json)
-- **SQLite Convert**: [**`tmdb_movies.sqlite`**](https://github.com/HERALDEXX/tmdb-movie-scraper/blob/feature/cli/converts/tmdb_movies.sqlite)
-- **XLSX (Excel) Convert**: [**`tmdb_movies.xlsx`**](https://github.com/HERALDEXX/tmdb-movie-scraper/blob/feature/cli/converts/tmdb_movies.xlsx)
+- **SQLite Convert**: [**`tmdb_movies.sqlite`**](https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/blob/feature/cli/converts/tmdb_movies.sqlite)
+- **XLSX (Excel) Convert**: [**`tmdb_movies.xlsx`**](https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/blob/feature/cli/converts/tmdb_movies.xlsx)
 - **Last Updated**: August 15, 2025
 - **Selection Criteria**: Top movies sorted by popularity
 - **Columns**: Title, Year, Rating, Description, Genre (plus `Adult` if enabled)
@@ -84,7 +84,13 @@ This repo contains an optimized Python scraper with a comprehensive Command-Line
    pip install -r requirements.txt
    ```
 
-3. Create your `.env` file:
+3. Switch to feature/cli branch:
+
+   ```bash
+   git checkout feature/cli
+   ```
+
+4. Create your `.env` file:
 
    ```bash
    cp .env.example .env
@@ -94,7 +100,7 @@ This repo contains an optimized Python scraper with a comprehensive Command-Line
 
    > You need a TMDb API key to run the scraper. Follow these steps to get your API key:
 
-4. Get your TMDb API key (step-by-step)
+5. Get your TMDb API key (step-by-step)
 
    - Go to [https://www.themoviedb.org/](https://www.themoviedb.org/) and sign up / log in.
 
@@ -114,9 +120,9 @@ This repo contains an optimized Python scraper with a comprehensive Command-Line
 
    - After submission you'll be shown an API key (a long string). **Do not share it publicly.**
 
-5. Copy your TMDb API key and replace `your_api_key_here` in the `.env` file with your actual API key.
+6. Copy your TMDb API key and replace `your_api_key_here` in the `.env` file with your actual API key.
 
-6. (Optional) Enable adult content in your `.env` file:
+7. (Optional) Enable adult content in your `.env` file:
 
    ```env
    TMDB_INCLUDE_ADULT=true
@@ -323,6 +329,7 @@ Data provided by TMDb ([https://www.themoviedb.org](https://www.themoviedb.org))
 
 ### Completed ✅
 
+- [x] **Web dashboard** - Browser-based interface
 - [x] **Async optimization** - 10x performance improvement
 - [x] **CLI interface** - Command-line tool with multiple options
 - [x] **Multiple formats** - JSON, XLSX, SQLite support
@@ -332,7 +339,6 @@ Data provided by TMDb ([https://www.themoviedb.org](https://www.themoviedb.org))
 
 ### Planned 🔄
 
-- [ ] **Web dashboard** - Browser-based interface
 - [ ] **Advanced filtering** - Genre, year, rating filters
 - [ ] **Data analysis** - Built-in statistics and insights
 - [ ] **API read access token** - Enhanced authentication

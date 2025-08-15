@@ -3,7 +3,7 @@ name: Publish Converts Folder to GitHub Pages
 on:
   push:
     branches:
-      - feature/CLI
+      - feature/cli
 
 jobs:
   deploy:
