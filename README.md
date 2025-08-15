@@ -60,7 +60,7 @@ This repo contains an optimized Python scraper with a comprehensive Command-Line
 - **JSON Convert**: [**`tmdb_movies.json`**](https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/feature/cli/converts/tmdb_movies.json)
 - **SQLite Convert**: [**`tmdb_movies.sqlite`**](https://github.com/HERALDEXX/tmdb-movie-scraper/blob/feature/cli/converts/tmdb_movies.sqlite)
 - **XLSX (Excel) Convert**: [**`tmdb_movies.xlsx`**](https://github.com/HERALDEXX/tmdb-movie-scraper/blob/feature/cli/converts/tmdb_movies.xlsx)
-- **Last Updated**: August 14, 2025
+- **Last Updated**: August 15, 2025
 - **Selection Criteria**: Top movies sorted by popularity
 - **Columns**: Title, Year, Rating, Description, Genre (plus `Adult` if enabled)
 
