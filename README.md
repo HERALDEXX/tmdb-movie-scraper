@@ -15,8 +15,10 @@ This repo contains a minimal Python scraper that uses TMDb's API (discover endpo
 - [Setup](#setup)
   - [Getting Your TMDb API Key](#getting-your-tmdb-api-key)
 - [Usage/Updating Dataset](#usageupdating-dataset)
-- [**CLI Edition**](#cli-edition)
-- [**API Optimization**](#api-optimization)
+  - [Basic Usage (This Branch)](#basic-usage-this-branch)
+  - [**Web Dashboard (Recommended)**](#web-dashboard)
+  - [CLI Edition](#cli-edition)
+  - [API Optimization](#api-optimization)
 - [Output CSV](#output-csv)
 - [Attribution](#attribution)
 - [To-Do](#to-do)
@@ -66,9 +68,17 @@ See [analysis/README.md](https://github.com/HERALDEXX/tmdb-movie-scraper/blob/fe
 
 4. Create your `.env` file:
 
-   ```bash
-   cp .env.example .env
-   ```
+   > Windows:
+
+      ```bash
+      copy .env.example .env
+      ```
+
+   > MacOS/Linux:
+
+      ```bash
+      cp .env.example .env
+      ```
 
    ### Getting Your TMDb API Key
 
@@ -119,13 +129,19 @@ See [analysis/README.md](https://github.com/HERALDEXX/tmdb-movie-scraper/blob/fe
 
 ---
 
-## CLI Edition
+### Web Dashboard
+
+Interactive browser-based dashboard **(with live scraping, abort controls, and dataset downloads)** is available in the [**`feature/web-dashboard`**](https://github.com/HERALDEXX/tmdb-movie-scraper/tree/feature/web-dashboard) branch.
+
+---
+
+### CLI Edition
 
 Powerful command-line tool **(with multiple output formats & advanced features)** is available in the [**`feature/cli`**](https://github.com/HERALDEXX/tmdb-movie-scraper/tree/feature/cli) branch.
 
 ---
 
-## API Optimization
+### API Optimization
 
 Optimized scraper **(with improved speed & efficiency)** is available in the [**`feature/api-optimization`**](https://github.com/HERALDEXX/tmdb-movie-scraper/tree/feature/api-optimization) branch.
 
@@ -158,10 +174,10 @@ Data provided by TMDb ([https://www.themoviedb.org](https://www.themoviedb.org))
 - [x] **Multiple output formats** - JSON, XLSX, SQLite support
 - [x] **Data conversion tools** - Convert between formats
 - [x] **Analysis notebooks** - Data exploration and insights
+- [x] **Web dashboard** - Browser-based interface
 
 ### In Progress 🔄
 
-- [ ] **Web dashboard** - Browser-based interface
 - [ ] **Advanced filtering** - Genre, year, rating filters
 
 ### Planned 📋
@@ -175,8 +191,7 @@ Data provided by TMDb ([https://www.themoviedb.org](https://www.themoviedb.org))
 
 ## License
 
-MIT License - see [LICENSE](./LICENSE) file for details.
----
+## MIT License - see [LICENSE](./LICENSE) file for details.
 
 <div align="center">
     <p>
