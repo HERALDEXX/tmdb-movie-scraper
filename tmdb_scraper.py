@@ -11,8 +11,6 @@ import logging
 
 load_dotenv()
 
-app_name = "TMDb Movie Scraper (Optimized)\nCopyright © 2025 Herald Inyang"
-
 # Configure logging for better error tracking
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -211,7 +209,7 @@ class TMDbScraperOptimized:
         """Main scraping method with optimized batching"""
         start_time = time.time()
         
-        print(f"{app_name}\n")
+        print(f"TMDb Movie Scraper (Optimized)\nCopyright © 2025 Herald Inyang\n")
         print(f"🚀 Starting optimized scraping of {self.target_movies} movies...")
         print(f"📊 Using {self.concurrent_requests} concurrent requests\n")
         
@@ -277,7 +275,10 @@ async def main():
                 scraper.save_to_csv(df)
                 print(f"\n🎬 Scraping complete! Found {len(df)} movies.")
                 if len(df) < scraper.target_movies:
-                    print(f"⚠️ Note: {scraper.target_movies - len(df)} movie(s) skipped due to API limits.\n")        
+                    skipped = scraper.target_movies - len(df)
+                    plural = "s" if skipped != 1 else ""
+                    print(f"\n⚠️ NOTE: {skipped:,} movie{plural} skipped due to API limits.\n")    
+            
             else:
                 print("❌ No movies were scraped. Please check your API key and connection.")
                 

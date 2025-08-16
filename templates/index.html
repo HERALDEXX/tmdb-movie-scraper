@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TMDb Movie Scraper Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            color: #4a5568;
+        }
+
+        .card-title i {
+            margin-right: 0.5rem;
+            color: #667eea;
+            font-size: 1.5rem;
+        }
+
+        .card-title h2 {
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status-card {
+            grid-column: 1 / -1;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .status-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .status-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .log-container {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 8px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .log-entry {
+            margin-bottom: 0.5rem;
+            padding: 0.25rem 0;
+            border-left: 3px solid transparent;
+            padding-left: 0.5rem;
+        }
+
+        .log-info { border-left-color: #4299e1; }
+        .log-success { border-left-color: #48bb78; }
+        .log-error { border-left-color: #f56565; }
+        .log-warning { border-left-color: #ed8936; }
+
+        .download-btn {
+            background: #48bb78;
+            margin-top: 1rem;
+        }
+
+        .download-btn:hover {
+            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.4);
+        }
+
+        .config-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .config-good { border-left: 4px solid #48bb78; }
+        .config-bad { border-left: 4px solid #f56565; }
+
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-film"></i> TMDb Movie Scraper</h1>
+            <p>Web Dashboard - Scrape movies with style</p>
+        </div>
+
+        <div class="dashboard">
+            <!-- Configuration Card -->
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-cog"></i>
+                    <h2>Configuration</h2>
+                </div>
+                
+                <div id="config-status" class="config-status">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Checking configuration...</span>
+                </div>
+
+                <form id="scrape-form">
+                    <div class="form-group">
+                        <label for="count">Number of Movies</label>
+                        <input type="number" id="count" name="count" value="1000" min="1" max="10000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="format">Output Format</label>
+                        <select id="format" name="format" required disabled>
+                            <option value="csv" selected>CSV (Excel Compatible)</option>
+                        </select>
+                        <small style="color: #64748b; margin-top: 0.25rem; display: block;">Only CSV format supported in this version</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="concurrent">Concurrent Requests</label>
+                        <input type="number" id="concurrent" name="concurrent" value="8" min="1" max="20" required>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="include-adult" name="include_adult">
+                            <label for="include-adult">Include Adult Content</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn" id="start-btn">
+                        <i class="fas fa-play"></i>
+                        Start Scraping
+                    </button>
+                    <button id="abort-btn" class="btn danger hidden" type="button" disabled title="Abort current scrape" style="margin-left:8px;">
+                        <i class="fas fa-stop"></i> Abort
+                    </button>                      
+                </form>
+            </div>
+
+            <!-- Live Stats Card -->
+            <div class="card">
+                <div class="card-title">
+                    <i class="fas fa-chart-line"></i>
+                    <h2>Live Statistics</h2>
+                </div>
+
+                <div class="status-grid">
+                    <div class="status-item">
+                        <div class="status-value" id="scraped-count">0</div>
+                        <div class="status-label">Movies Scraped</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-value" id="progress-percent">0%</div>
+                        <div class="status-label">Progress</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-value" id="elapsed-time">--</div>
+                        <div class="status-label">Elapsed Time</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-value" id="status-text">Ready</div>
+                        <div class="status-label">Status</div>
+                    </div>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+
+                <button class="btn download-btn hidden" id="download-btn">
+                    <i class="fas fa-download"></i>
+                    Download Results
+                </button>
+                <div id="skipped-message" style="display: none; color: orange; font-weight: bold; margin-top: 10px;">
+                    NOTE:
+                    <span id="skipped-number" style="margin:0 4px;"></span>
+                    <span id="skipped-text">movies were not scraped (possibly due to API limits or other issues).</span>
+                </div>                
+            </div>
+        </div>
+
+        <!-- Activity Log -->
+        <div class="card status-card">
+            <div class="card-title">
+                <i class="fas fa-terminal"></i>
+                <h2>Activity Log</h2>
+            </div>
+            <div class="log-container" id="log-container">
+                <div class="log-entry log-info">
+                    <strong>[READY]</strong> Dashboard initialized. Configure your scraping parameters above.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class ScraperDashboard {
+            constructor() {
+                this.ws = null;
+                this.currentSession = null;
+                this.startTime = null;
+                this.elapsedTimer = null;
+
+                this.initWebSocket();
+                this.bindEvents();
+                this.checkConfig();
+            }
+
+            initWebSocket() {
+                const wsUrl = `ws://${window.location.host}/ws`;
+                this.ws = new WebSocket(wsUrl);
+
+                this.ws.onopen = () => {
+                    this.log('WebSocket connected', 'success');
+                };
+
+                this.ws.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    this.handleWebSocketMessage(data);
+                };
+
+                this.ws.onclose = () => {
+                    this.log('WebSocket disconnected. Attempting to reconnect...', 'warning');
+                    setTimeout(() => this.initWebSocket(), 3000);
+                };
+
+                this.ws.onerror = (error) => {
+                    this.log(`WebSocket error: ${error}`, 'error');
+                };
+            }
+
+            bindEvents() {
+                document.getElementById('scrape-form').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.startScraping();
+                });
+
+                document.getElementById('download-btn').addEventListener('click', () => {
+                    this.downloadResults();
+                });
+
+                document.getElementById('abort-btn').addEventListener('click', () => this.abortCurrentSession());
+
+            }
+
+            async checkConfig() {
+                try {
+                    const response = await fetch('/api/config');
+                    const config = await response.json();
+                    
+                    const statusDiv = document.getElementById('config-status');
+                    if (config.has_api_key) {
+                        statusDiv.className = 'config-status config-good';
+                        statusDiv.innerHTML = `
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>Configuration OK</strong><br>
+                                <small>API Key: ${config.api_key_preview}</small>
+                            </div>
+                        `;
+                        this.log('API configuration validated successfully', 'success');
+                    } else {
+                        statusDiv.className = 'config-status config-bad';
+                        statusDiv.innerHTML = `
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div>
+                                <strong>API Key Missing</strong><br>
+                                <small>Please configure TMDB_API_KEY in your .env file</small>
+                            </div>
+                        `;
+                        this.log('API key not configured. Please check your .env file', 'error');
+                    }
+                } catch (error) {
+                    this.log(`Failed to check configuration: ${error.message}`, 'error');
+                }
+            }
+
+            async startScraping() {
+                const form = document.getElementById('scrape-form');
+                const formData = new FormData(form);
+                
+                try {
+                    this.log('Starting new scraping session...', 'info');
+                    this.updateUI('running');
+
+                    this.updateSkippedUI();
+                    
+                    const response = await fetch('/api/scrape', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.detail || 'Failed to start scraping');
+                    }
+                    
+                    const result = await response.json();
+                    this.currentSession = result.session_id;
+                    this.startTime = new Date();
+                    this.startElapsedTimer();
+                    
+                    this.log(`Session started: ${result.session_id}`, 'success');
+                    this.pollSession();
+                    
+                } catch (error) {
+                    this.log(`Error starting scrape: ${error.message}`, 'error');
+                    this.updateUI('error');
+                }
+            }
+
+            // Request abort for the current session (frontend + notify server)
+            async abortCurrentSession() {
+                if (!this.currentSession) {
+                    this.log('No active scraping session to abort.', 'warning');
+                    return;
+                }
+
+                // Prevent double-clicks
+                const abortBtn = document.getElementById('abort-btn');
+                abortBtn.disabled = true;
+                abortBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Aborting...';
+
+                try {
+                    // Try to notify the server (best-effort). Backend should implement this endpoint (optional).
+                    const resp = await fetch(`/api/sessions/${this.currentSession}/abort`, { method: 'POST' });
+
+                    if (resp.ok) {
+                        this.log('Abort requested. Waiting for server to stop the session...', 'info');
+                        // keep currentSession until server broadcasts cancellation so UI shows server-confirmed state
+                        this.abortRequested = true;
+                    } else {
+                        // If backend doesn't support the endpoint, we still stop frontend activity
+                        this.log('Abort endpoint not available — stopping frontend updates only.', 'warning');
+                        // stop frontend polling/updates and mark session as cleared (frontend-only abort)
+                        this._frontendAbortCleanup();
+                    }
+                } catch (err) {
+                    // Network error or endpoint missing -> stop frontend side to avoid UI confusion
+                    this.log(`Abort request failed: ${err.message}. Stopping frontend updates.`, 'error');
+                    this._frontendAbortCleanup();
+                }
+            }
+
+            // Local helper to stop frontend activity if server-side abort unavailable
+            _frontendAbortCleanup() {
+                // stop timers and polling
+                this.stopElapsedTimer();
+                // stop poll by nulling currentSession so no more progress updates are applied
+                this.currentSession = null;
+                // hide/disable abort button and restore start UI
+                const abortBtn = document.getElementById('abort-btn');
+                if (abortBtn) {
+                    abortBtn.disabled = true;
+                    abortBtn.innerHTML = '<i class="fas fa-stop"></i> Abort';
+                    abortBtn.classList.add('hidden');
+                }
+                // reset UI to idle (same as non-running)
+                this.updateUI('');
+                this.log('Frontend aborted: UI stopped updating. Server may still be scraping.', 'warning');
+            }
+
+            async pollSession() {
+                if (!this.currentSession) return;
+                
+                // If WebSocket is open, prefer WS updates — avoid duplicate polling which causes jitter.
+                // WebSocket is the primary real-time channel; polling is fallback.
+                if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                    // schedule a re-check later in case WS dies, but do not fetch now
+                    setTimeout(() => this.pollSession(), 2000);
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/api/sessions/${this.currentSession}`);
+                    if (!response.ok) return;
+                    
+                    const session = await response.json();
+                    this.updateProgress(session);
+                    
+                    if (session.status === 'running') {
+                        setTimeout(() => this.pollSession(), 1000);
+                    }
+                    
+                } catch (error) {
+                    this.log(`Error polling session: ${error.message}`, 'error');
+                }
+            }
+
+            updateProgress(session) {
+                document.getElementById('scraped-count').textContent = session.scraped.toLocaleString();
+                document.getElementById('progress-percent').textContent = `${session.progress}%`;
+                document.getElementById('status-text').textContent = session.status.charAt(0).toUpperCase() + session.status.slice(1);
+                
+                const progressFill = document.getElementById('progress-fill');
+                progressFill.style.width = `${session.progress}%`;
+
+                if (session.status === 'completed') {
+                    this.updateUI('completed');
+                    this.stopElapsedTimer();
+                    this.log(`Scraping completed! ${session.scraped.toLocaleString()} movies scraped.`, 'success');
+                } else if (session.status === 'error') {
+                    this.updateUI('error');
+                    this.stopElapsedTimer();
+                    this.log(`Scraping failed: ${session.error}`, 'error');
+                }
+            }
+
+            // Lightweight, session-aware skipped UI updater
+            // show skipped notice ONLY when the session is complete (or backend explicitly provides `skipped`)
+            updateSkippedUI(sessionOrData = {}) {
+                try {
+                    // ignore updates for other sessions
+                    const incomingId = sessionOrData.session_id ?? sessionOrData.id ?? null;
+                    if (incomingId && incomingId !== this.currentSession) return;
+
+                    const skippedMsg = document.getElementById('skipped-message');
+                    const skippedNumber = document.getElementById('skipped-number');
+                    const skippedText = document.getElementById('skipped-text');
+                    if (!skippedMsg || !skippedNumber || !skippedText) return;
+
+                    // Determine whether this update represents a "completed" report.
+                    // We only show the note after completion, or if backend explicitly sent `skipped`.
+                    const explicitSkipped = (typeof sessionOrData.skipped === 'number') ? sessionOrData.skipped : null;
+                    const isComplete = sessionOrData.status === 'completed'
+                                    || sessionOrData.event === 'session_complete'
+                                    || explicitSkipped !== null;
+
+                    // If not complete -> hide and return (do not show intermediate values)
+                    if (!isComplete) {
+                        skippedNumber.textContent = '';
+                        skippedText.textContent = 'movies were not scraped (possibly due to API limits or other issues).';
+                        skippedMsg.style.display = 'none';
+                        return;
+                    }
+
+                    // now compute skipped (backend `skipped` takes priority)
+                    const total = sessionOrData.total ?? sessionOrData.count ?? null;
+                    const scraped = (typeof sessionOrData.scraped === 'number') ? sessionOrData.scraped : null;
+                    const computedSkipped = explicitSkipped !== null
+                        ? explicitSkipped
+                        : (total !== null && scraped !== null ? Math.max(0, total - scraped) : 0);
+
+                    if (computedSkipped > 0) {
+                        skippedNumber.textContent = computedSkipped.toLocaleString();
+                        skippedText.textContent = (computedSkipped === 1)
+                            ? 'movie was not scraped (possibly due to API limits or other issues).'
+                            : 'movies were not scraped (possibly due to API limits or other issues).';
+                        skippedMsg.style.display = 'block';
+                    } else {
+                        // completed but nothing skipped -> hide note (keeps UX same as before)
+                        skippedNumber.textContent = '';
+                        skippedText.textContent = 'movies were not scraped (possibly due to API limits or other issues).';
+                        skippedMsg.style.display = 'none';
+                    }
+                } catch (e) {
+                    console.error('updateSkippedUI error', e);
+                }
+            }
+
+            updateUI(status) {
+                const startBtn = document.getElementById('start-btn');
+                const downloadBtn = document.getElementById('download-btn');
+                const abortBtn = document.getElementById('abort-btn');
+
+                if (status === 'running') {
+                    // Show running state
+                    startBtn.disabled = true;
+                    startBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scraping...';
+                    downloadBtn.classList.add('hidden');
+
+                    if (abortBtn) {
+                        abortBtn.disabled = false;
+                        abortBtn.classList.remove('hidden');
+                        abortBtn.innerHTML = '<i class="fas fa-stop"></i> Abort';
+                    }
+                } else if (status === 'completed') {
+                    // Show completed state
+                    startBtn.disabled = false;
+                    startBtn.innerHTML = '<i class="fas fa-play"></i> Start Scraping';
+                    downloadBtn.classList.remove('hidden');
+
+                    if (abortBtn) {
+                        abortBtn.disabled = true;
+                        abortBtn.classList.add('hidden');
+                        abortBtn.innerHTML = '<i class="fas fa-stop"></i> Abort';
+                    }
+                } else {
+                    // Idle or reset state
+                    startBtn.disabled = false;
+                    startBtn.innerHTML = '<i class="fas fa-play"></i> Start Scraping';
+                    downloadBtn.classList.add('hidden');
+
+                    if (abortBtn) {
+                        abortBtn.disabled = true;
+                        abortBtn.classList.add('hidden');
+                        abortBtn.innerHTML = '<i class="fas fa-stop"></i> Abort';
+                    }
+                }
+            }
+
+            async downloadResults() {
+                if (!this.currentSession) return;
+                
+                try {
+                    this.log('Preparing download...', 'info');
+                    const response = await fetch(`/api/download/${this.currentSession}`);
+                    
+                    if (!response.ok) {
+                        throw new Error('Download failed');
+                    }
+                    
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    
+                    // Get filename from response headers or create default
+                    const contentDisposition = response.headers.get('Content-Disposition');
+                    let filename = 'tmdb_movies.csv';
+                    if (contentDisposition) {
+                        const match = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+                        if (match) {
+                            filename = match[1].replace(/['"]/g, '');
+                        }
+                    }
+                    
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                    
+                    this.log(`Download started: ${filename}`, 'success');
+                    
+                } catch (error) {
+                    this.log(`Download failed: ${error.message}`, 'error');
+                }
+            }
+
+            handleWebSocketMessage(data) {
+                switch (data.type) {
+                    case 'session_update':
+                        if (data.session_id === this.currentSession) {
+                            this.log(`Session status: ${data.status}`, 'info');
+
+                            if (data.status === 'cancelling') {
+                                // Server acknowledged abort request
+                                this.log('Server is cancelling the session...', 'warning');
+                                const abortBtn = document.getElementById('abort-btn');
+                                if (abortBtn) {
+                                    abortBtn.disabled = true;
+                                    abortBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Aborting...';
+                                }
+                            }
+
+                            if (data.status === 'cancelled' || data.status === 'cancelled_by_user') {
+                                // Final cancellation confirmed by server
+                                this.stopElapsedTimer();
+                                this.log('Scraping aborted.', 'warning');
+
+                                // Clear current session so no more progress updates are applied
+                                this.currentSession = null;
+
+                                // Hide abort button and reset UI
+                                const abortBtn = document.getElementById('abort-btn');
+                                if (abortBtn) {
+                                    abortBtn.disabled = true;
+                                    abortBtn.classList.add('hidden');
+                                    abortBtn.innerHTML = '<i class="fas fa-stop"></i> Abort';
+                                }
+
+                                this.updateUI(''); // Return to idle state
+                            }
+                        }
+                        break;
+                    case 'progress_update':
+                        if (data.session_id === this.currentSession) {
+                            document.getElementById('scraped-count').textContent = data.scraped.toLocaleString();
+                            document.getElementById('progress-percent').textContent = `${data.progress}%`;
+                            document.getElementById('progress-fill').style.width = `${data.progress}%`;
+                        }
+                        break;
+                    case 'session_complete':
+                        if (data.session_id === this.currentSession) {
+                            this.updateUI('completed');
+                            this.stopElapsedTimer();
+                            this.log(`Scraping completed! ${data.scraped.toLocaleString()} movies scraped.`, 'success');
+                            this.updateSkippedUI({ session_id: data.session_id, scraped: data.scraped, skipped: data.skipped, total: data.total });
+
+                        }
+                        break;
+                    case 'session_error':
+                        if (data.session_id === this.currentSession) {
+                            this.updateUI('error');
+                            this.stopElapsedTimer();
+                            this.log(`Scraping failed: ${data.error}`, 'error');
+                        }
+                        break;
+                }
+            }
+
+            startElapsedTimer() {
+                this.elapsedTimer = setInterval(() => {
+                    if (this.startTime) {
+                        const elapsed = Math.floor((new Date() - this.startTime) / 1000);
+                        const minutes = Math.floor(elapsed / 60);
+                        const seconds = elapsed % 60;
+                        document.getElementById('elapsed-time').textContent = 
+                            `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                    }
+                }, 1000);
+            }
+
+            stopElapsedTimer() {
+                if (this.elapsedTimer) {
+                    clearInterval(this.elapsedTimer);
+                    this.elapsedTimer = null;
+                }
+            }
+
+            log(message, type = 'info') {
+                const logContainer = document.getElementById('log-container');
+                const timestamp = new Date().toLocaleTimeString();
+                const entry = document.createElement('div');
+                entry.className = `log-entry log-${type}`;
+                entry.innerHTML = `<strong>[${timestamp}]</strong> ${message}`;
+                logContainer.appendChild(entry);
+                logContainer.scrollTop = logContainer.scrollHeight;
+
+                // Keep only last 50 entries to prevent memory issues
+                while (logContainer.children.length > 50) {
+                    logContainer.removeChild(logContainer.firstChild);
+                }
+            }
+        }
+
+        // Initialize dashboard when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new ScraperDashboard();
+        });
+    </script>
+    <footer style="text-align: center; margin-top: 20px; padding: 10px; background-color: #f8f9fa; border-top: 1px solid #dee2e6;">
+        <p>Copyright © {{ current_year }} Herald Inyang. All rights reserved.</p>
+    </footer>
+</body>
+</html>
