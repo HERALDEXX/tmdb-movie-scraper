@@ -6,7 +6,7 @@
 version: 2
 updates:
   # Main branch updates
-  - package-ecosystem: "pip" # or pip, docker, etc.
+  - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "weekly"
@@ -32,7 +32,6 @@ updates:
     schedule:
       interval: "weekly"
     target-branch: "feature/analysis-notebooks"
-    
 
   # Python analysis dependencies
   - package-ecosystem: "pip"
@@ -40,3 +39,10 @@ updates:
     schedule:
       interval: "weekly"
     target-branch: "feature/analysis-notebooks"
+
+  # Web dashboard branch updates
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    target-branch: "feature/web-dashboard"
