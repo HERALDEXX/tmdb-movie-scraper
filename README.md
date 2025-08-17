@@ -16,7 +16,7 @@ This repo contains a minimal Python scraper that uses TMDb's API (discover endpo
   - [Getting Your TMDb API Key](#getting-your-tmdb-api-key)
 - [Usage/Updating Dataset](#usageupdating-dataset)
    - [Basic Usage (This Branch)](#basic-usage-this-branch)
-   - [**Web Dashboard**](#web-dashboard)
+   - [**Web Dashboard (Recommended)**](#web-dashboard)
    - [CLI Edition](#cli-edition)
    - [API Optimization](#api-optimization)
 - [Output CSV](#output-csv)
