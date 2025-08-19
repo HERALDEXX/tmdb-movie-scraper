@@ -8,6 +8,7 @@ import asyncio
 import json
 import logging
 import os
+import sqlite3
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Optional, List
@@ -26,9 +27,9 @@ from tmdb_scraper import TMDbScraperOptimized, logger
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="TMDb Movie Scraper Dashboard", version="1.0.0")
+app = FastAPI(title="TMDb Movie Scraper Dashboard", version="1.1.0")
 
-# Setup templates (no static files needed)
+# Setup templates
 templates = Jinja2Templates(directory="templates")
 
 # Global state for scraping sessions
@@ -66,6 +67,34 @@ class ConnectionManager:
 
 manager = ConnectionManager()
 
+def save_data(df: pd.DataFrame, filename: str, format_type: str) -> bool:
+    """Save DataFrame in the specified format"""
+    try:
+        if format_type.lower() == 'csv':
+            df.to_csv(filename, index=False)
+            
+        elif format_type.lower() == 'json':
+            df.to_json(filename, orient='records', indent=2)
+            
+        elif format_type.lower() == 'xlsx':
+            df.to_excel(filename, index=False, engine='openpyxl')
+            
+        elif format_type.lower() == 'sqlite':
+            # Create SQLite database
+            conn = sqlite3.connect(filename)
+            df.to_sql('movies', conn, if_exists='replace', index=False)
+            conn.close()
+            
+        else:
+            logger.error(f"Unsupported format: {format_type}")
+            return False
+        
+        return True
+        
+    except Exception as e:
+        logger.error(f"Failed to save {format_type.upper()} file: {e}")
+        return False
+
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     current_year = datetime.now().year
@@ -85,21 +114,26 @@ async def get_config():
 @app.post("/api/scrape")
 async def start_scrape(
     count: int = Form(1000),
+    format: str = Form("csv"),
     concurrent: int = Form(8),
     include_adult: bool = Form(False)
 ):
+    # Validate inputs
     if count < 1 or count > 10000:
         raise HTTPException(status_code=400, detail="Count must be between 1 and 10,000")
     
     if concurrent < 1 or concurrent > 20:
         raise HTTPException(status_code=400, detail="Concurrent requests must be between 1 and 20")
     
+    if format not in ["csv", "json", "xlsx", "sqlite"]:
+        raise HTTPException(status_code=400, detail="Format must be csv, json, xlsx, or sqlite")
+    
     session_id = str(uuid.uuid4())
     session = {
         "id": session_id,
         "status": "starting",
         "count": count,
-        "format": "csv",
+        "format": format,
         "concurrent": concurrent,
         "include_adult": include_adult,
         "scraped": 0,
@@ -162,9 +196,22 @@ async def download_file(session_id: str):
     if not Path(filename).exists():
         raise HTTPException(status_code=404, detail="File not found")
     
-    download_name = f"tmdb_movies_{session['count']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+    # Get appropriate media type and download name
+    format_ext = session["format"]
+    media_types = {
+        "csv": "text/csv",
+        "json": "application/json", 
+        "xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "sqlite": "application/x-sqlite3"
+    }
     
-    return FileResponse(filename, media_type="text/csv", filename=download_name)
+    download_name = f"tmdb_movies_{session['count']}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{format_ext}"
+    
+    return FileResponse(
+        filename,
+        media_type=media_types.get(format_ext, "application/octet-stream"),
+        filename=download_name
+    )
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
@@ -180,11 +227,6 @@ async def run_scraper(session: dict):
     session_id = session["id"]
     
     try:
-        if session["include_adult"]:
-            os.environ["TMDB_INCLUDE_ADULT"] = "true"
-        else:
-            os.environ.pop("TMDB_INCLUDE_ADULT", None)
-        
         session["status"] = "running"
         await manager.broadcast({
             "type": "session_update",
@@ -216,8 +258,10 @@ async def run_scraper(session: dict):
         
         async with TMDbScraperOptimized(
             target_movies=session["count"],
-            concurrent_requests=session["concurrent"]
+            concurrent_requests=session["concurrent"],
+            include_adult=session["include_adult"]
         ) as scraper:
+
             
             original_process_method = scraper.process_movie_data
             def enhanced_process_method(movies):
@@ -249,9 +293,15 @@ async def run_scraper(session: dict):
                 session["error"] = "No data scraped. Check API key and connection."
                 return
             
+            # Save file in requested format
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename = f"tmdb_movies_{timestamp}_{session_id[:8]}.csv"
-            df.to_csv(filename, index=False)
+            filename = f"tmdb_movies_{timestamp}_{session_id[:8]}.{session['format']}"
+            
+            success = save_data(df, filename, session["format"])
+            if not success:
+                session["status"] = "error"
+                session["error"] = f"Failed to save {session['format'].upper()} file"
+                return
             
             session["filename"] = filename
             session["status"] = "completed"

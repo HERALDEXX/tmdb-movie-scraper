@@ -28,9 +28,9 @@ This repo contains the optimized Python scraper from the api-optimization branch
 ### TMDb Movies Dataset
 
 - **Source**: The Movie Database (TMDb) API
-- **Size**: ~10,000 movies
-- **Format**: CSV
-- **File**: Generated with timestamp (e.g., [`tmdb_movies_20250816_132926_186c814f.csv`](https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/feature/web-dashboard/tmdb_movies_20250816_132926_186c814f.csv))
+- **Size**: ~10,000 movies (Customizable)
+- **Supported Formats**: CSV, JSON, XLSX, SQLite
+- **File**: Generated with timestamp (e.g., [`tmdb_movies_20250819_091252_2203583e.json`](https://raw.githubusercontent.com/HERALDEXX/tmdb-movie-scraper/feature/web-dashboard/sample/tmdb_movies_20250819_091252_2203583e.json))
 - **Selection Criteria**: Top movies sorted by popularity
 - **Columns**: Title, Year, Rating, Description, Genre (plus `Adult` if `TMDB_INCLUDE_ADULT` is enabled)
 
@@ -41,12 +41,13 @@ This repo contains the optimized Python scraper from the api-optimization branch
 **New Feature**: Modern web interface with real-time progress tracking, multiple export formats, and intuitive configuration.
 
 ### Features
+
 - 🎨 **Modern UI**: Clean, responsive design that works on all devices
 - 📊 **Live Progress**: Real-time scraping progress with visual indicators
 - ⚙️ **Easy Configuration**: Web-based parameter adjustment (movies count, concurrent requests, adult content)
 - 📝 **Activity Logging**: Color-coded real-time logs
 - 🔧 **API Validation**: Automatic API key verification
-- 📁 **CSV Export**: Download results as CSV files
+- 📁 **Multiple output formats**: CSV, JSON, XLSX, SQLite
 
 ---
 
@@ -77,6 +78,14 @@ This repo contains the optimized Python scraper from the api-optimization branch
    ```
 
 5. Create your `.env` file:
+
+   > Windows:
+
+   ```bash
+   copy .env.example .env
+   ```
+
+   > MacOS/Linux:
 
    ```bash
    cp .env.example .env
@@ -113,7 +122,8 @@ This repo contains the optimized Python scraper from the api-optimization branch
    ```env
    TMDB_INCLUDE_ADULT=true
    ```
-> **Important**: Do not commit your `.env` file or API key to a public repo.
+
+   > **Important**: Do not commit your `.env` file or API key to a public repo.
 
 ---
 
@@ -130,10 +140,11 @@ This repo contains the optimized Python scraper from the api-optimization branch
 2. Open your browser to: **[http://localhost:8000](http://localhost:8000)**
 
 3. Configure your scraping parameters:
+
    - **Number of movies**: 1-10,000
    - **Concurrent requests**: 1-20 (8 recommended)
    - **Adult content**: Toggle on/off
-   - **Output format**: CSV (currently only format supported)
+   - **Output formats**: CSV, JSON, XLSX, SQLite
 
 4. Click **"Start Scraping"** and monitor real-time progress
 
@@ -149,44 +160,66 @@ You can still run the optimized scraper directly:
 python tmdb_scraper.py
 ```
 
-> The script writes and/or updates `tmdb_movies.csv` with latest data from TMDb API.
-
-**Note**: Currently only CSV format is supported. Use the web interface for easier configuration and real-time progress monitoring.
+**Note**: Use the web interface for easier configuration and real-time progress monitoring.
 
 ---
 
-## Output Format
+## Output Formats
 
-### CSV (Both Methods)
+### CSV Format:
 
-Columns:
+> ### Comma-separated values, viewable in spreadsheet tools like Excel or Google Sheets.
 
-- `Title` — movie title
-- `Year` — release year (YYYY)
-- `Rating` — TMDb `vote_average`
-- `Description` — overview (single line)
-- `Genre` — comma-separated genre names
-- `Adult` — `true` if movie is adult content (column only present if `TMDB_INCLUDE_ADULT` is enabled)
+```csv
+Title,Year,Rating,Description,Genre
+The Shawshank Redemption,1994,9.3,"Two imprisoned men bond...",Drama
+The Godfather,1972,9.2,"The aging patriarch...",Drama Crime
+```
 
-*Both the web interface and direct script output CSV format.*
+### JSON Format:
+
+> ### Structured data, open in any text viewer/editor.
+
+```json
+[
+  {
+    "Title": "The Shawshank Redemption",
+    "Year": "1994",
+    "Rating": 9.3,
+    "Description": "Two imprisoned men bond...",
+    "Genre": "Drama"
+  }
+]
+```
+
+### SQLite Database:
+
+> ### Table named `movies` with columns for Title, Year, **etc**. View with a SQLite viewer like DB Browser for SQLite.
+
+### XLSX (Excel):
+
+> ### Formatted spreadsheet, compatible with Excel or Google Sheets.
 
 ---
 
 ## Configuration
 
 ### Environment Variables (.env)
+
 ```env
 TMDB_API_KEY=your_api_key_here
 TMDB_INCLUDE_ADULT=false  # Set to true to include adult content
 ```
 
 ### Web Dashboard Settings
+
 - **Movies Count**: 1-10,000 (default: 1,000)
 - **Concurrent Requests**: 1-20 (default: 8)
-- **Output Format**: CSV/JSON/XLSX
+- **Output Formats**: CSV, JSON, XLSX, SQLite
 - **Adult Content**: Include/exclude adult-rated movies
 
 ### Performance Tuning
+
 - **8 concurrent requests**: Good for most connections
 - **Higher concurrency**: Faster scraping but requires stable internet
 - **Lower concurrency**: More reliable for slower connections
@@ -213,19 +246,23 @@ tmdb-movie-scraper/
 ### Common Issues
 
 **API Key Missing:**
+
 - Ensure `TMDB_API_KEY` is set in your `.env` file
 - Verify your key at [TMDb Settings](https://www.themoviedb.org/settings/api)
 
 **Web Dashboard Won't Start:**
+
 - Check if port 8000 is available: `python app.py`
 - Try a different port: `uvicorn app:app --port 8001`
 
 **Slow Performance:**
+
 - Reduce concurrent requests for slower internet
 - Check your internet connection stability
 - Monitor TMDb API rate limits
 
 **Download Issues:**
+
 - Ensure scraping completed successfully
 - Check browser download permissions
 - Try refreshing the page
@@ -241,9 +278,9 @@ Data provided by TMDb ([https://www.themoviedb.org](https://www.themoviedb.org))
 ## To-Do
 
 - Store scraped data in a better format, instead of CSV e.g.
-  - [ ] Use JSON
-  - [ ] Use SQLite
-  - [ ] Use XLSX
+  - [x] Use JSON
+  - [x] Use SQLite
+  - [x] Use XLSX
   - [ ] Use XML
   - [ ] Use PostgreSQL / MySQL
         **or**

@@ -23,7 +23,7 @@ def env_bool(name: str, default: bool = False) -> bool:
     if v is None:
         return default
     return v.strip().lower() in ("1", "true", "yes", "y", "on")
-INCLUDE_ADULT = env_bool("TMDB_INCLUDE_ADULT", default=False)
+DEFAULT_INCLUDE_ADULT = env_bool("TMDB_INCLUDE_ADULT", default=False)
 
 
 # Check if API key exists
@@ -37,13 +37,16 @@ DISCOVER_ENDPOINT = f"{BASE_URL}/discover/movie"
 GENRE_ENDPOINT = f"{BASE_URL}/genre/movie/list"
 
 class TMDbScraperOptimized:
-    def __init__(self, target_movies: int = 10000, concurrent_requests: int = 5):
+    def __init__(self, target_movies: int = 10000, concurrent_requests: int = 5,
+             include_adult: bool | None = None):
         self.target_movies = target_movies
         self.concurrent_requests = concurrent_requests
+        self.include_adult = DEFAULT_INCLUDE_ADULT if include_adult is None else include_adult
         self.genres_map = {}
         self.movies_data = []
         self.session: Optional[aiohttp.ClientSession] = None
         self.semaphore = asyncio.Semaphore(concurrent_requests)
+
         
     async def __aenter__(self):
         """Async context manager entry"""
@@ -99,8 +102,9 @@ class TMDbScraperOptimized:
         }
 
         # Only include adult flag if enabled
-        if INCLUDE_ADULT:
-            params["include_adult"] = str(INCLUDE_ADULT).lower()
+        if self.include_adult:
+            params["include_adult"] = "true"
+
 
 
         async with self.semaphore:
@@ -172,8 +176,8 @@ class TMDbScraperOptimized:
                 "Genre": genres,
             }
 
-            # Only add "Adult" key if INCLUDE_ADULT is True
-            if INCLUDE_ADULT:
+            # Only add "Adult" key if include_adult is True
+            if self.include_adult:
                 movie_dict["Adult"] = adult_flag
 
             processed.append(movie_dict)

@@ -272,10 +272,12 @@
 
                     <div class="form-group">
                         <label for="format">Output Format</label>
-                        <select id="format" name="format" required disabled>
+                        <select id="format" name="format" required>
                             <option value="csv" selected>CSV (Excel Compatible)</option>
+                            <option value="json">JSON (Web Friendly)</option>
+                            <option value="xlsx">XLSX (Excel Native)</option>
+                            <option value="sqlite">SQLite Database</option>
                         </select>
-                        <small style="color: #64748b; margin-top: 0.25rem; display: block;">Only CSV format supported in this version</small>
                     </div>
 
                     <div class="form-group">
@@ -296,7 +298,7 @@
                     </button>
                     <button id="abort-btn" class="btn danger hidden" type="button" disabled title="Abort current scrape" style="margin-left:8px;">
                         <i class="fas fa-stop"></i> Abort
-                    </button>                      
+                    </button>
                 </form>
             </div>
 
@@ -533,7 +535,7 @@
                     setTimeout(() => this.pollSession(), 2000);
                     return;
                 }
-
+                
                 try {
                     const response = await fetch(`/api/sessions/${this.currentSession}`);
                     if (!response.ok) return;
@@ -557,7 +559,7 @@
                 
                 const progressFill = document.getElementById('progress-fill');
                 progressFill.style.width = `${session.progress}%`;
-
+                
                 if (session.status === 'completed') {
                     this.updateUI('completed');
                     this.stopElapsedTimer();
@@ -625,9 +627,8 @@
                 const startBtn = document.getElementById('start-btn');
                 const downloadBtn = document.getElementById('download-btn');
                 const abortBtn = document.getElementById('abort-btn');
-
+                
                 if (status === 'running') {
-                    // Show running state
                     startBtn.disabled = true;
                     startBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Scraping...';
                     downloadBtn.classList.add('hidden');
@@ -638,7 +639,6 @@
                         abortBtn.innerHTML = '<i class="fas fa-stop"></i> Abort';
                     }
                 } else if (status === 'completed') {
-                    // Show completed state
                     startBtn.disabled = false;
                     startBtn.innerHTML = '<i class="fas fa-play"></i> Start Scraping';
                     downloadBtn.classList.remove('hidden');
@@ -649,7 +649,6 @@
                         abortBtn.innerHTML = '<i class="fas fa-stop"></i> Abort';
                     }
                 } else {
-                    // Idle or reset state
                     startBtn.disabled = false;
                     startBtn.innerHTML = '<i class="fas fa-play"></i> Start Scraping';
                     downloadBtn.classList.add('hidden');
