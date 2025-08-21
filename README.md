@@ -68,9 +68,17 @@ See [analysis/README.md](https://github.com/HERALDEXX/tmdb-movie-scraper/blob/fe
 
 4. Create your `.env` file:
 
-   ```bash
-   cp .env.example .env
-   ```
+   > Windows:
+
+      ```bash
+      copy .env.example .env
+      ```
+
+   > MacOS/Linux:
+
+      ```bash
+      cp .env.example .env
+      ```
 
    ### Getting Your TMDb API Key
 
@@ -183,8 +191,7 @@ Data provided by TMDb ([https://www.themoviedb.org](https://www.themoviedb.org))
 
 ## License
 
-MIT License - see [LICENSE](./LICENSE) file for details.
----
+## MIT License - see [LICENSE](./LICENSE) file for details.
 
 <div align="center">
     <p>
