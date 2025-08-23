@@ -11,7 +11,7 @@ This repo contains a minimal Python scraper that uses TMDb's API (discover endpo
 - [Dataset](#dataset)
 - [Analysis](#analysis)
 - [Setup](#setup)
-   - [Getting Your TMDb API Key](#getting-your-tmdb-api-key)
+  - [Getting Your TMDb API Key](#getting-your-tmdb-api-key)
 - [Usage/Updating Dataset](#usageupdating-dataset)
 - [Output CSV](#output-csv)
 - [Attribution](#attribution)
@@ -34,7 +34,7 @@ This repo contains a minimal Python scraper that uses TMDb's API (discover endpo
 
 ## Analysis
 
-The `analysis/` folder contains Jupyter notebooks that explore insights from the movie dataset:
+The `analysis/` folder contains a Jupyter notebook that explore insights from the movie dataset:
 
 - **📊 Exploratory Analysis** - Dataset overview, rating distributions, and key statistics
 - **📈 Movie Trends** - Genre popularity over decades, rating patterns, and temporal insights
@@ -44,13 +44,13 @@ The `analysis/` folder contains Jupyter notebooks that explore insights from the
 
 - Complete the [**setup**](#setup) first.
 
--  ```bash
-   pip install -r analysis/requirements-analysis.txt
-   ```
+- ```bash
+  pip install -r analysis/requirements-analysis.txt
+  ```
 
--  ```bash
-   jupyter notebook analysis/
-   ```
+- ```bash
+  jupyter notebook analysis/
+  ```
 
 See [analysis/README.md](./analysis/README.md) for detailed setup and notebook descriptions.
 
@@ -71,6 +71,7 @@ See [analysis/README.md](./analysis/README.md) for detailed setup and notebook d
    ```
 
 3. Switch to feature/analysis-notebooks branch:
+
    ```bash
    git checkout feature/analysis-notebooks
    ```
@@ -82,6 +83,14 @@ See [analysis/README.md](./analysis/README.md) for detailed setup and notebook d
    ```
 
 5. Create your `.env` file:
+
+   > Windows:
+
+   ```bash
+   copy .env.example .env
+   ```
+
+   > macOS/Linux:
 
    ```bash
    cp .env.example .env

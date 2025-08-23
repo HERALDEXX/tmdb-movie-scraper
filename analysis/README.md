@@ -15,20 +15,15 @@ This folder contains Jupyter notebooks for exploring and analyzing the TMDb movi
 
 ## Available Notebooks
 
-### [`exploratory_analysis.ipynb`](./exploratory_analysis.ipynb)
+### [`tmdb_movies_analysis.ipynb`](./tmdb_movies_analysis.ipynb)
 
-**Complete dataset overview and fundamental insights**
+**Comprehensive Movie Dataset Analysis**
 
 - Dataset structure and data quality assessment
 - Rating distribution analysis and statistics
 - Genre frequency and popularity rankings
 - Missing data patterns and data cleaning insights
 - Top-rated movies and statistical summaries
-
-### [`movie_trends.ipynb`](./movie_trends.ipynb)
-
-**Temporal patterns and industry trend analysis**
-
 - Genre popularity evolution across decades
 - Rating trends over time periods
 - Movie release patterns by year
@@ -59,8 +54,7 @@ From the project root directory:
    ```
 
 3. **Start exploring:**
-   - Open `exploratory_analysis.ipynb` for dataset overview
-   - Open `movie_trends.ipynb` for trend analysis
+   - Open `tmdb_movies_analysis.ipynb` for comprehensive analysis
 
 ## Dependencies
 
@@ -102,8 +96,7 @@ The analysis notebooks require these packages (included in `requirements-analysi
 ```
 analysis/
 ├── README.md                    # This file
-├── exploratory_analysis.ipynb   # Dataset overview and basic stats
-└── movie_trends.ipynb          # Temporal analysis and trends
+└── tmdb_movies_analysis.ipynb   # Comprehensive analysis notebook
 ```
 
 ## Next Steps
