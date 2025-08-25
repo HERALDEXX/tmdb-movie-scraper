@@ -1,7 +1,7 @@
 # Original dependencies
 pandas==2.2.3
 python-dotenv==1.1.1
-requests==2.32.4
+requests==2.32.5
 
 # Optimization dependencies
 aiohttp>=3.8.0
