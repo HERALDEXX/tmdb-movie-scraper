@@ -1,5 +1,5 @@
 # Original dependencies
-pandas==2.2.3
+pandas==2.3.2
 python-dotenv==1.1.1
 requests==2.32.4
 
