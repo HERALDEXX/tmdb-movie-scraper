@@ -10,6 +10,7 @@ This repo contains the optimized Python scraper from the api-optimization branch
 
 - [Dataset](#dataset)
 - [Web Dashboard](#web-dashboard)
+- [Screenshots](#screenshots)
 - [Setup](#setup)
   - [Getting Your TMDb API Key](#getting-your-tmdb-api-key)
 - [Usage](#usage)
@@ -50,6 +51,26 @@ This repo contains the optimized Python scraper from the api-optimization branch
 - 📁 **Multiple output formats**: CSV, JSON, XLSX, SQLite
 
 ---
+
+## Screenshots
+
+### Dashboard Initial State
+![Initial Dashboard](images/initial-state.png)
+*Clean, intuitive interface ready for configuration*
+
+### Activity Log - Scraping in Progress
+![Activity Log During Scraping](images/initial-activity-log.png)
+*Real-time progress monitoring with color-coded status messages*
+
+### Post-Scraping Dashboard
+![Completed Scraping Dashboard](images/post-scraping-state.png)
+*Dashboard showing completed scraping with download options*
+
+### Activity Log - Completion
+![Final Activity Log](images/post-scraping-activity-log.png)
+*Comprehensive log showing successful completion and file generation*
+
+--- 
 
 ## Setup
 
@@ -235,6 +256,7 @@ tmdb-movie-scraper/
 ├── requirements.txt          # Dependencies (includes web dashboard)
 ├── templates/
 │   └── index.html           # Dashboard interface
+├── screenshots/             # Dashboard screenshots
 ├── .env                     # Your configuration
 └── README.md                # This file
 ```
