@@ -1,6 +1,6 @@
 # Original dependencies
 pandas==2.2.3
-python-dotenv==1.1.1
+python-dotenv==1.2.2
 requests==2.32.4
 
 # Optimization dependencies
